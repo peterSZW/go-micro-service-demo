@@ -49,18 +49,47 @@ go build
 service_demo.exe
 ```
 
+# Run 运行 (Linux)
+
+* consul
+
+```
+./
+wget https://releases.hashicorp.com/consul/1.11.4/consul_1.11.4_linux_amd64.zip
+
+unzip consul_1.11.4_linux_amd64.zip
+
+./consul agent -server -bootstrap -data-dir ~/consul -bind="127.0.0.1" -client="0.0.0.0" -node=abc -datacenter=goMicroService -ui
+```
+
+* gateway
+
+```
+go build
+./go-micro-service-demo
+```
+
+* service
+
+```
+cd service_demo
+go build
+./service_demo 
+```
+
+
 * ab test 压力测试, 服务跟踪
 
 ```
 ab -c 10 -n 10000 http://127.0.0.1:8899/echo
-ab -c 10 -n 10000 http://127.0.0.1:8899/app/userservice/echo
-ab -c 10 -n 10000 http://127.0.0.1:8899/app/userservice/echo2
+ab -c 10 -n 10000 http://127.0.0.1:8900/app/userservice/echo
+ab -c 10 -n 10000 http://127.0.0.1:8900/app/userservice/echo2
 ```
 
 * 限流熔断
 ```
-ab -c 10 -n 100000   http://127.0.0.1:8899/hystrix?percent=20
-ab -c 10 -n 100000   http://127.0.0.1:8899/limit
+ab -c 10 -n 100000   http://127.0.0.1:8900/hystrix?percent=20
+ab -c 10 -n 10000   http://127.0.0.1:8900/limit
 ```
 
 # hystrix 面板

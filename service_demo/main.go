@@ -149,7 +149,10 @@ func CatchExitSignal(serverlisten net.Listener) {
 
 			AllDone <- true
 		} else {
-			log15.Info("catch exit signal", "get signal", s)
+			if s != syscall.SIGURG {
+				log15.Info("catch exit signal", "get signal", s)
+			}
+
 		}
 	}
 }

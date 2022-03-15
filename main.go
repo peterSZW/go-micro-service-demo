@@ -5,12 +5,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/afex/hystrix-go/hystrix"
-	"github.com/buaazp/fasthttprouter"
-	"github.com/d7561985/opentracefasthttp"
-	"github.com/inconshreveable/log15"
-	"github.com/valyala/fasthttp"
-	"go.uber.org/ratelimit"
 	"math/rand"
 	"net"
 	"net/http"
@@ -20,6 +14,13 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/afex/hystrix-go/hystrix"
+	"github.com/buaazp/fasthttprouter"
+	"github.com/d7561985/opentracefasthttp"
+	"github.com/inconshreveable/log15"
+	"github.com/valyala/fasthttp"
+	"go.uber.org/ratelimit"
 
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
@@ -92,7 +93,7 @@ func hystrixtest(c *fasthttp.RequestCtx) {
 		}
 
 		if n < percent {
-			c.SuccessString("application/json", fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
+			//c.SuccessString("application/json", fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
 			return errors.New("hystrixtest ERR" + fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
 		} else {
 			c.SuccessString("application/json", fmt.Sprintf(`{"MSG":"OK","rand":%d,"percent":%d,	 }`, n, percent))
@@ -330,7 +331,9 @@ func CatchExitSignal(serverlisten net.Listener) {
 
 			AllDone <- true
 		} else {
-			log15.Info("catch exit signal", "get signal", s)
+			if s != syscall.SIGURG {
+				log15.Info("catch exit signal", "get signal", s)
+			}
 		}
 	}
 }
