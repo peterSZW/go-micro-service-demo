@@ -59,31 +59,31 @@ func echo2(ctx *fasthttp.RequestCtx) {
 
 }
 
-func echo(c *fasthttp.RequestCtx) {
+func echo(ctx *fasthttp.RequestCtx) {
 
 	qps.Count()
-	c.SuccessString("application/json", `{"code":0}`)
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 
-func health(c *fasthttp.RequestCtx) {
+func health(ctx *fasthttp.RequestCtx) {
 
 	UpdateAgentServices()
-	c.SuccessString("application/json", `{"code":0}`)
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 
-func limit(c *fasthttp.RequestCtx) {
+func limit(ctx *fasthttp.RequestCtx) {
 	ratelimitClient.Take()
 	qps.Count()
 
-	c.SuccessString("application/json", `{"code":0}`)
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 
 //ab -c 6 -n 10000000  http://127.0.0.1:8899/hystrix?percent=20
 
-func hystrixtest(c *fasthttp.RequestCtx) {
+func hystrixtest(ctx *fasthttp.RequestCtx) {
 	qps.Count()
 
-	percent := c.QueryArgs().GetUintOrZero("percent")
+	percent := ctx.QueryArgs().GetUintOrZero("percent")
 
 	hystrix.Do("hystrixtest", func() error {
 		n := rand.Intn(100)
@@ -93,34 +93,34 @@ func hystrixtest(c *fasthttp.RequestCtx) {
 		}
 
 		if n < percent {
-			//c.SuccessString("application/json", fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
+			//ctx.SuccessString("application/json", fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
 			return errors.New("hystrixtest ERR" + fmt.Sprintf(`{"MSG":"ERR","rand":%d,"percent":%d,	 }`, n, percent))
 		} else {
-			c.SuccessString("application/json", fmt.Sprintf(`{"MSG":"OK","rand":%d,"percent":%d,	 }`, n, percent))
+			ctx.SuccessString("application/json", fmt.Sprintf(`{"MSG":"OK","rand":%d,"percent":%d,	 }`, n, percent))
 			return nil
 		}
 
 	}, func(err error) error {
 
-		c.SuccessString("application/json", `{"hystrixtest back":0}`+err.Error())
+		ctx.SuccessString("application/json", `{"hystrixtest back":0}`+err.Error())
 		return nil
 	})
 
 }
 
-func index(c *fasthttp.RequestCtx) {
-	c.SuccessString("text/html;charset=utf-8", "access <a href=/app/service/method>/app/service/method</a> to call your service method.")
+func index(ctx *fasthttp.RequestCtx) {
+	ctx.SuccessString("text/html;charset=utf-8", "access <a href=/app/service/method>/app/service/method</a> to call your service method.")
 }
 
-func deregister(c *fasthttp.RequestCtx) {
+func deregister(ctx *fasthttp.RequestCtx) {
 	deregisterService()
-	c.SuccessString("application/json", `{"code":0}`)
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 
-func register(c *fasthttp.RequestCtx) {
+func register(ctx *fasthttp.RequestCtx) {
 	registerService()
 
-	c.SuccessString("application/json", `{"code":0}`)
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 func listAllService() {
 	AgentService := GetAgentServices()

@@ -42,13 +42,29 @@ func main() {
 	<-AllDone
 }
 
-func echo(c *fasthttp.RequestCtx) {
-	qps.Count()
-	c.SuccessString("application/json", `{"code":0}`)
+func testpost(ctx *fasthttp.RequestCtx) {
+	//arg := ctx.QueryArgs().GetUintOrZero("arg")
+	//postValues := ctx.PostArgs()
+	//fmt.Fprint(ctx, string(postValues))
+
+	// 获取表单数据
+	//fmt.Fprint(ctx, string(ctx.FormValue("abc")))
+
+	// 这两行可以获取PostBody数据，在上传数据文件的时候有用
+	postBody := ctx.PostBody()
+
+	//fmt.Fprint(ctx, string(postBody))
+
+	ctx.SuccessString("application/json", string(postBody))
 }
 
-func health(c *fasthttp.RequestCtx) {
-	c.SuccessString("application/json", `{"code":0}`)
+func echo(ctx *fasthttp.RequestCtx) {
+	qps.Count()
+	ctx.SuccessString("application/json", `{"code":0}`)
+}
+
+func health(ctx *fasthttp.RequestCtx) {
+	ctx.SuccessString("application/json", `{"code":0}`)
 }
 
 func echo2(ctx *fasthttp.RequestCtx) {
@@ -81,6 +97,8 @@ func httpserver() {
 	//Web Service Handle
 	r.GET("/echo", echo)
 	r.GET("/echo2", echo2)
+	//
+	r.POST("/post", testpost)
 
 	var ln net.Listener
 	var err error

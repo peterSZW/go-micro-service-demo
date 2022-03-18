@@ -11,10 +11,12 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/hashicorp/consul/api v1.7.0
 	github.com/inconshreveable/log15 v0.0.0-20200109203555-b30bc20e4fd1
+	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5 // indirect
 	github.com/stretchr/testify v1.4.0
+	github.com/tinylib/msgp v1.1.6 // indirect
 	github.com/uber/jaeger-client-go v2.16.0+incompatible
 	github.com/valyala/fasthttp v1.16.0
 	github.com/xiaomi-tc/log15 v0.0.0-20191113113727-7f66c2abf493

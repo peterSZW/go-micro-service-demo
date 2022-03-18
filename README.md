@@ -54,8 +54,8 @@ service_demo.exe
 * consul
 
 ```
-./
 wget https://releases.hashicorp.com/consul/1.11.4/consul_1.11.4_linux_amd64.zip
+wget https://releases.hashicorp.com/consul/1.11.4/consul_1.11.4_linux_arm64.zip
 
 unzip consul_1.11.4_linux_amd64.zip
 
@@ -77,6 +77,7 @@ go build
 ./service_demo 
 ```
 
+# 测试运行
 
 * ab test 压力测试, 服务跟踪
 
@@ -95,7 +96,7 @@ ab -c 10 -n 10000   http://127.0.0.1:8900/limit
 # hystrix 面板
 ```
 docker run -d -p 9090:9002 --name hystrix-dashboard mlabouardy/hystrix-dashboard:latest
-浏览器访问 http://dockerhost:9090/hystrix
+浏览器访问 http://127.0.0.1:9090/hystrix (dockerhost)
 输入 http://127.0.0.1:8182  (gateway IP)
 ```
 
