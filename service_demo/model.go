@@ -1,8 +1,11 @@
 package main
 
-import jsoniter "github.com/json-iterator/go"
+import (
+	"github.com/inconshreveable/log15"
+	jsoniter "github.com/json-iterator/go"
+)
 
-type Person struct {
+type TPerson struct {
 	DocId       uint32
 	Position    string
 	Company     string
@@ -16,6 +19,17 @@ type Person struct {
 
 var json_iterator = jsoniter.ConfigCompatibleWithStandardLibrary
 
-func test() {
+func (this *TPerson) add(id int, dis int) {
 
+}
+
+func (this *TPerson) AsJsonString() string {
+
+	b, err := json_iterator.Marshal(this)
+	if err != nil {
+		log15.Error("JSON Marshal", "errr", err, "person", this)
+		return ""
+	} else {
+		return string(b)
+	}
 }

@@ -5,8 +5,6 @@ import (
 	"testing"
 )
 
-var person = Person{DocId: 123, Position: "搜索工程师", Company: "百度", City: "北京", SchoolLevel: 2, Vip: false, Chat: true, Active: 1, WorkAge: 3}
-
 func Test_Jsoniter(t *testing.T) {
 	type ColorGroup struct {
 		ID     int
@@ -24,5 +22,12 @@ func Test_Jsoniter(t *testing.T) {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
+
+}
+
+func Test_Person(t *testing.T) {
+	var person = TPerson{DocId: 12}
+
+	t.Log(person.AsJsonString())
 
 }
